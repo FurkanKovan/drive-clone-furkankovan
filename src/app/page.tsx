@@ -32,7 +32,7 @@ export default function Home() {
   const handleBreadcrumbClick = (index: number) => {
     const newBreadcrumbs = breadcrumbs.slice(0, index + 1)
     setBreadcrumbs(newBreadcrumbs)
-    setCurrentFolder(newBreadcrumbs[newBreadcrumbs.length - 1].id)
+    setCurrentFolder(newBreadcrumbs[newBreadcrumbs.length - 1]?.id ?? "")
   }
 
   const getFileIcon = (type: FileItem["type"]) => {
