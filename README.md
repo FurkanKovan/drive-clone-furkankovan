@@ -3,6 +3,10 @@
 ## TODO
 - [ ] Make a TODO list
 - [ ] Create a mockup UI
+- [ ] Set up database and data model
+- [ ] Move folder open state to URL
+- [ ] Add auth
+- [ ] Add file uploading
 
 ## Steps taken:
 1. Create the project using [T3 stack](https://create.t3.gg/) (pnpm create t3-app@latest project-name)
