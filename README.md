@@ -9,4 +9,5 @@
 2. Initialize [git](https://git-scm.com/) and create a [GitHub](https://github.com/) repo
 3. Synch GitHub repo with [Netlify](https://app.netlify.com/)
 4. Build a starting mockup UI with [V0](https://v0.dev/)
-5. 
+5. Add github CI yaml file (.github/workflows/ci.yaml) to typecheck and lint on push commands
+6. 
