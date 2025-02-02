@@ -101,7 +101,7 @@ export default function Home() {
                 )}
               </TableCell>
               <TableCell>{file.type}</TableCell>
-              <TableCell>{file.size || "-"}</TableCell>
+              <TableCell>{file.size ?? "-"}</TableCell>
               <TableCell className="text-right">{file.modified}</TableCell>
             </TableRow>
           ))}
