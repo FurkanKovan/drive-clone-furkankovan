@@ -1,8 +1,20 @@
 # Google Drive Clone Project
 
+## Stack:
+- [React](https://react.dev/)
+- [Next.js](http://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Drizzle](https://orm.drizzle.team/) (database)
+
+## External Services Used in Project:
+- [T3 Stack](https://create.t3.gg/) - bootstrap for full-stack nextjs app projects
+- [V0](https://v0.dev/) - generative chat for building UI components, mainly uses [shadcn](https://ui.shadcn.com/)
+- [Netlify](https://www.netlify.com/) - development and management platform for web apps
+- [Singlestore](https://www.singlestore.com/) - database management system
+
 ## TODO
-- [ ] Make a TODO list
-- [ ] Create a mockup UI
+- [x] Make a TODO list
+- [x] Create a mockup UI
 - [ ] Set up database and data model
 - [ ] Move folder open state to URL
 - [ ] Add auth
