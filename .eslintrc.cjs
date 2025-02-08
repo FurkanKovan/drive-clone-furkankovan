@@ -1,5 +1,7 @@
-/** @type {import("eslint").Linter.Config} */
-const config = {
+const { defineConfig } = require("eslint-define-config");
+
+const config = defineConfig({
+  "root": true,
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": true
@@ -57,5 +59,5 @@ const config = {
       }
     ]
   }
-}
+})
 module.exports = config;
