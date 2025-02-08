@@ -16,9 +16,10 @@
 - [x] Make a TODO list
 - [x] Create a mockup UI
 - [x] Set up database and data model
-- [ ] Move folder open state to URL
+- [x] Move folder open state to URL
 - [ ] Add auth
 - [ ] Add file uploading
+- [ ] Add analytics
 
 ## Steps taken:
 1. Create the project using [T3 stack](https://create.t3.gg/) (pnpm create t3-app@latest project-name)
@@ -29,4 +30,4 @@
 6. Handle database configuration for [Singlestore](https://www.singlestore.com/) under server/db/index.ts, configure [drizzle](https://orm.drizzle.team/) config, add dummy schema to test connection
 7. Rework files under app to better fit tutorial files to prevent unrelated issues
 8. Create a sandbox environment to send mock data to [Singlestore](https://www.singlestore.com/) database and make app get actual data from database instead of mock data
-9. 
+9. Add folder route to go to a folder by using folder id on url
