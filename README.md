@@ -11,6 +11,7 @@
 - [V0](https://v0.dev/) - generative chat for building UI components, mainly uses [shadcn](https://ui.shadcn.com/)
 - [Netlify](https://www.netlify.com/) - development and management platform for web apps
 - [Singlestore](https://www.singlestore.com/) - database management system
+- [Clerk](https://clerk.com/) - authentication management
 
 ## TODO
 - [x] Make a TODO list
@@ -31,3 +32,5 @@
 7. Rework files under app to better fit tutorial files to prevent unrelated issues
 8. Create a sandbox environment to send mock data to [Singlestore](https://www.singlestore.com/) database and make app get actual data from database instead of mock data
 9. Add folder route to go to a folder by using folder id on url
+10. Seperate data access layer to another component (from page to queries) for cleanup
+11. 
