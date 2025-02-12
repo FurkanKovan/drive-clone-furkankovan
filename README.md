@@ -13,6 +13,7 @@
 - [Singlestore](https://www.singlestore.com/) - database management system
 - [Clerk](https://clerk.com/) - authentication management
 - [UploadThing](https://uploadthing.com/) - easier file upload handler
+- [PostHog](https://posthog.com/) - product analytics
 
 ## TODO
 - [x] Make a TODO list
@@ -22,6 +23,8 @@
 - [x] Add auth
 - [x] Add file uploading
 - [ ] Add analytics
+- [ ] Add delete
+- [ ] Real homepage and onboarding
 
 ## Steps taken:
 1. Create the project using [T3 stack](https://create.t3.gg/) (pnpm create t3-app@latest project-name)
@@ -37,4 +40,5 @@
 11. Implement Google account auth with [Clerk](https://clerk.com/)
 12. Add file upload button and proper functionality with [UploadThing](https://uploadthing.com/), updates on db
 13. Add ownership to files and uploads, make sure files uploads to correct folder path
-14. 
+14. Add analytics feature with [PostHog](https://posthog.com/), tidy up project folder structure
+15. 
