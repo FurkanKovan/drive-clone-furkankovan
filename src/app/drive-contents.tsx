@@ -16,6 +16,7 @@ export default function DriveContents(props: {
   files: (typeof files.$inferSelect)[];
   folders: (typeof folders.$inferSelect)[];
   parents: (typeof folders.$inferSelect)[];
+  currentFolderId: number;
 }) {
   const navigate = useRouter();
 
@@ -73,6 +74,7 @@ export default function DriveContents(props: {
           onClientUploadComplete={() => {
             navigate.refresh(); // To get updated data for this route, revalidate page contents and get correct state
           }}
+          input={{ folderId: props.currentFolderId }}
         />
       </div>
     </div>

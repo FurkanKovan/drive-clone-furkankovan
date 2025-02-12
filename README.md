@@ -36,4 +36,5 @@
 10. Seperate data access layer to another component (from page to queries) for cleanup
 11. Implement Google account auth with [Clerk](https://clerk.com/)
 12. Add file upload button and proper functionality with [UploadThing](https://uploadthing.com/), updates on db
-13. 
+13. Add ownership to files and uploads, make sure files uploads to correct folder path
+14. 
