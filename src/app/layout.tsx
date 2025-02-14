@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Google Drive Clone",
-  description: "A basic Google Drive clone UI",
+  description: "A basic Google Drive clone",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 

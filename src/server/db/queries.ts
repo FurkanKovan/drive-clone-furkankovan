@@ -5,7 +5,7 @@ import {
     files_table as filesSchema,
     folders_table as foldersSchema,
 } from "~/server/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, isNull } from "drizzle-orm";
 
 export const DB_QUERIES = {
     getAllParentsForFolder: async function (folderId: number) {
@@ -41,14 +41,23 @@ export const DB_QUERIES = {
     },
     getFolderById: async function (folderId: number) {
         const folder = await db
-          .select()
-          .from(foldersSchema)
-          .where(eq(foldersSchema.id, folderId));
+            .select()
+            .from(foldersSchema)
+            .where(eq(foldersSchema.id, folderId));
         return folder[0];
-      },
+    },
+    getRootFolderForUser: async function (userId: string) {
+        const folder = await db
+            .select()
+            .from(foldersSchema)
+            .where(
+                and(eq(foldersSchema.ownerId, userId), isNull(foldersSchema.parent)),
+            );
+        return folder[0];
+    },
 };
 
-export const MUTATIONS = {
+export const DB_MUTATIONS = {
     createFile: async function (input: {
         file: {
             name: string;
@@ -61,6 +70,35 @@ export const MUTATIONS = {
         return await db.insert(filesSchema).values({
             ...input.file,
             ownerId: input.userId,
-          });
-    }
+        });
+    },
+    onboardUser: async function (userId: string) {
+        const rootFolder = await db
+          .insert(foldersSchema)
+          .values({
+            name: "Root",
+            parent: null,
+            ownerId: userId,
+          })
+          .$returningId();
+        const rootFolderId = rootFolder[0]!.id;
+        await db.insert(foldersSchema).values([
+          {
+            name: "Documents",
+            parent: rootFolderId,
+            ownerId: userId,
+          },
+          {
+            name: "Photos",
+            parent: rootFolderId,
+            ownerId: userId,
+          },
+          {
+            name: "Videos",
+            parent: rootFolderId,
+            ownerId: userId,
+          },
+        ]);
+        return rootFolderId;
+      },
 };

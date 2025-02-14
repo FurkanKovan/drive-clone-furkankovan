@@ -23,8 +23,8 @@
 - [x] Add auth
 - [x] Add file uploading
 - [x] Add analytics
-- [ ] Add delete
-- [ ] Real homepage and onboarding
+- [x] Add delete
+- [x] Real homepage and onboarding
 
 ## Steps taken:
 1. Create the project using [T3 stack](https://create.t3.gg/) (pnpm create t3-app@latest project-name)
@@ -41,4 +41,5 @@
 12. Add file upload button and proper functionality with [UploadThing](https://uploadthing.com/), updates on db
 13. Add ownership to files and uploads, make sure files uploads to correct folder path
 14. Add analytics feature with [PostHog](https://posthog.com/), tidy up project folder structure
-15. 
+15. Add delete functionality, for now just for the files
+16. Add an onboarding page, check if user is signed in, if user has no drive create a new one with default folders
