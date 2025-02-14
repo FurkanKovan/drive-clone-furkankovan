@@ -1,4 +1,11 @@
 # Google Drive Clone Project
+This project is about creating a basic clone of Google's Drive service. There are quite a few external services used to simplify certain functionalities of the application such as file storage, cloud upload, authentication and web analytics. In a way, using all of these tools reflects how to build a production ready real-life web application.
+
+[Click here to see final version of the project!](https://drive-tutorial-furkankovan.netlify.app/)
+
+All of the used services do provide a free tier to try out their products. To run this project locally please make sure to sign up to the relevant services. Also please check out the environment variables example ('.env.example' file) for configuration values. 
+
+Special thanks to [t3.gg](https://www.youtube.com/@t3dotgg) for providing the tutorial videos.
 
 ## Stack:
 - [React](https://react.dev/)
@@ -14,6 +21,7 @@
 - [Clerk](https://clerk.com/) - authentication management
 - [UploadThing](https://uploadthing.com/) - easier file upload handler
 - [PostHog](https://posthog.com/) - product analytics
+- [GitHub](https://github.com/) - code share and storage, version control and CI/CD pipeline
 
 ## TODO
 - [x] Make a TODO list
@@ -25,6 +33,8 @@
 - [x] Add analytics
 - [x] Add delete
 - [x] Real homepage and onboarding
+- [ ] Add more functionality
+- [ ] Prettify the UI
 
 ## Steps taken:
 1. Create the project using [T3 stack](https://create.t3.gg/) (pnpm create t3-app@latest project-name)
