@@ -22,7 +22,7 @@
 - [x] Move folder open state to URL
 - [x] Add auth
 - [x] Add file uploading
-- [ ] Add analytics
+- [x] Add analytics
 - [ ] Add delete
 - [ ] Real homepage and onboarding
 
