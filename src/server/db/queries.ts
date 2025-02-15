@@ -55,6 +55,14 @@ export const DB_QUERIES = {
             );
         return folder[0];
     },
+    getOwnerIdForFolder: async function (folderId: number) {
+        const result = await db
+            .select({ ownerId: foldersSchema.ownerId })
+            .from(foldersSchema)
+            .where(eq(foldersSchema.id, folderId))
+            .limit(1);
+            return result[0]?.ownerId ?? null;
+    },
 };
 
 export const DB_MUTATIONS = {
@@ -74,31 +82,31 @@ export const DB_MUTATIONS = {
     },
     onboardUser: async function (userId: string) {
         const rootFolder = await db
-          .insert(foldersSchema)
-          .values({
-            name: "Root",
-            parent: null,
-            ownerId: userId,
-          })
-          .$returningId();
+            .insert(foldersSchema)
+            .values({
+                name: "Root",
+                parent: null,
+                ownerId: userId,
+            })
+            .$returningId();
         const rootFolderId = rootFolder[0]!.id;
         await db.insert(foldersSchema).values([
-          {
-            name: "Documents",
-            parent: rootFolderId,
-            ownerId: userId,
-          },
-          {
-            name: "Photos",
-            parent: rootFolderId,
-            ownerId: userId,
-          },
-          {
-            name: "Videos",
-            parent: rootFolderId,
-            ownerId: userId,
-          },
+            {
+                name: "Documents",
+                parent: rootFolderId,
+                ownerId: userId,
+            },
+            {
+                name: "Photos",
+                parent: rootFolderId,
+                ownerId: userId,
+            },
+            {
+                name: "Videos",
+                parent: rootFolderId,
+                ownerId: userId,
+            },
         ]);
         return rootFolderId;
-      },
+    },
 };
