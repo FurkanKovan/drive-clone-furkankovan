@@ -25,12 +25,12 @@ export default function DriveContents(props: {
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center">
             <Link
-              href="/folder/1"
+              href={`/folder/${props.parents[0]?.id ?? props.currentFolderId}`}
               className="mr-2 text-gray-300 hover:text-white"
             >
               My Drive
             </Link>
-            {props.parents.map((folder) => (
+            {props.parents.slice(1).map((folder) => (
               <div key={folder.id} className="flex items-center">
                 <ChevronRight className="mx-2 text-gray-500" size={16} />
                 <Link
@@ -69,13 +69,16 @@ export default function DriveContents(props: {
             ))}
           </ul>
         </div>
-        <UploadButton
-          endpoint="driveUploader"
-          onClientUploadComplete={() => {
-            navigate.refresh(); // To get updated data for this route, revalidate page contents and get correct state
-          }}
-          input={{ folderId: props.currentFolderId }}
-        />
+        <div className="inline-flex justify-center w-full">
+          <UploadButton
+            className="mt-4 ut-button:hover:brightness-150"
+            endpoint="driveUploader"
+            onClientUploadComplete={() => {
+              navigate.refresh(); // To get updated data for this route, revalidate page contents and get correct state
+            }}
+            input={{ folderId: props.currentFolderId }}
+          />
+        </div>
       </div>
     </div>
   );
