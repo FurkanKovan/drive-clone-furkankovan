@@ -20,7 +20,7 @@ export default function DriveContents(props: {
   const navigate = useRouter();
 
   return (
-    <div className="min-h-screen bg-gray-900 p-8 text-gray-100">
+    <div className="flex min-h-screen flex-col bg-gray-900 p-8 text-gray-100">
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center">
@@ -69,7 +69,7 @@ export default function DriveContents(props: {
             ))}
           </ul>
         </div>
-        <div className="inline-flex justify-center w-full">
+        <div className="inline-flex w-full justify-center">
           <UploadButton
             className="mt-4 ut-button:hover:brightness-150"
             endpoint="driveUploader"
@@ -80,6 +80,23 @@ export default function DriveContents(props: {
           />
         </div>
       </div>
+      <p className="mx-auto mt-auto px-4 max-w-screen-md text-xs text-red-200 text-center">
+        Disclaimer! This website is only a demo and not intended for any
+        personal usage. Please only upload files for testing purposes and make
+        sure to delete them afterwards. Do not upload any sensitive files. All
+        uploaded files are publicly accessible via{" "}
+        <a
+          href="https://uploadthing.com/"
+          className="font-bold text-red-500 hover:text-red-100"
+        >
+          UploadThing
+        </a>{" "}
+        file url. Note that if server storage limit is reached from our side, no
+        upload will be made.
+      </p>
+      <footer className="items-center text-center mt-2 text-sm text-neutral-500">
+        © {new Date().getFullYear()} FurkanKovan Drive. All rights reserved.
+      </footer>
     </div>
   );
 }

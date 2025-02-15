@@ -34,7 +34,8 @@ Special thanks to [t3.gg](https://www.youtube.com/@t3dotgg) for providing the tu
 - [x] Add delete
 - [x] Real homepage and onboarding
 - [ ] Add more functionality
-- [ ] Prettify the UI
+- [x] Prettify UI a bit
+- [x] Add disclaimer
 
 ## Steps taken:
 1. Create the project using [T3 stack](https://create.t3.gg/) (pnpm create t3-app@latest project-name)
@@ -53,3 +54,5 @@ Special thanks to [t3.gg](https://www.youtube.com/@t3dotgg) for providing the tu
 14. Add analytics feature with [PostHog](https://posthog.com/), tidy up project folder structure
 15. Add delete functionality, for now just for the files
 16. Add an onboarding page, check if user is signed in, if user has no drive create a new one with default folders
+17. Prevent users to access unauthorized folders for them
+18. Add disclaimer to footer
