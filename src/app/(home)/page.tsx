@@ -5,8 +5,8 @@ import { Button } from "~/components/ui/button";
 export default function HomePage() {
   return (
     <>
-      <span className="m-5 scale-[1.05] p-5 leading-[1.2]">
-        <h1 className="mb-6 scale-[1.05] bg-gradient-to-r from-teal-800 to-neutral-200 bg-clip-text text-5xl font-bold leading-[1.2] text-transparent md:text-6xl">
+      <span className="m-5 p-5">
+        <h1 className="mb-6 bg-gradient-to-r from-teal-800 to-neutral-200 bg-clip-text text-5xl font-bold leading-[1.2] text-transparent md:text-6xl">
           Drive Clone by{" "}
           <a
             href="https://github.com/FurkanKovan"
@@ -17,7 +17,7 @@ export default function HomePage() {
           </a>
         </h1>
       </span>
-      <p className="mx-auto mb-8 max-w-md text-xl text-neutral-200 md:text-2xl">
+      <p className="mx-auto mb-8 max-w-md text-xl text-neutral-200 md:text-xl">
         Not so secure, not so fast, but maybe a bit easy file storage for the
         modern web
       </p>
