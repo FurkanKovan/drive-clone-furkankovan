@@ -21,7 +21,7 @@ export default function DriveContents(props: {
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-900 p-8 text-gray-100">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-2">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center">
             <Link
