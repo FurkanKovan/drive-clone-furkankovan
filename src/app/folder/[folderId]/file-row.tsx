@@ -4,13 +4,12 @@ import {
   Trash2Icon,
   Loader2Icon,
   EllipsisVerticalIcon,
-  FolderPlusIcon,
   FolderPenIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "~/components/ui/button";
-import { deleteFile, renameFolder } from "~/server/actions";
+import { deleteFile, deleteFolder, renameFolder } from "~/server/actions";
 import type {
   folders_table as folders,
   files_table as files,
@@ -62,7 +61,7 @@ export function FileRow(props: { file: typeof files.$inferSelect }) {
           </Button>
 
           {showDeletePopup && (
-            <div className="pointer-events-none fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="pointer-events-none fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
               <div className="pointer-events-auto -translate-y-3/4 transform rounded-lg bg-white p-6 text-black shadow-lg">
                 <h2 className="text-lg font-bold">Confirm Delete</h2>
                 <p className="mt-2">
@@ -102,14 +101,31 @@ export function FileRow(props: { file: typeof files.$inferSelect }) {
     </li>
   );
 }
+
 export function FolderRow(props: { folder: typeof folders.$inferSelect }) {
   const { folder } = props;
   const [showFolderOptions, setFolderOptions] = useState<boolean>(false);
   const [showRenamePopup, setShowRenamePopup] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const [isRenaming, setIsRenaming] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const folderOptionsRef = useRef<HTMLDivElement | null>(null);
 
+  // Handle Folder Delete
+  const handleDelete = async (folderId: number) => {
+    setIsDeleting(true);
+    try {
+      await deleteFolder(folderId); // Wait for the delete function
+      setShowDeletePopup(false); // Close the modal
+    } catch (error) {
+      console.error("Error deleting file:", error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  // Handle Folder Rename
   const handleRename = async () => {
     if (!newFolderName.trim()) return;
 
@@ -117,20 +133,15 @@ export function FolderRow(props: { folder: typeof folders.$inferSelect }) {
     try {
       await renameFolder(newFolderName.trim(), folder.id);
       setShowRenamePopup(false); // Close popup after renaming
-      setNewFolderName("");
     } catch (error) {
       console.error("Error renaming folder:", error);
-      setNewFolderName("");
     } finally {
       setNewFolderName("");
       setIsRenaming(false);
     }
   };
 
-  const handleDelete = async () => {
-   console.log("Deleting folder...")
-  };
-
+  // Open-close options container
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -195,22 +206,22 @@ export function FolderRow(props: { folder: typeof folders.$inferSelect }) {
                 Rename Folder
               </Button>
               {/* Delete Folder */}
-              {/* <Button
+              <Button
                 onClick={() => {
                   setFolderOptions(false);
-                  handleDelete();
+                  setShowDeletePopup(true);
                 }}
                 className="flex w-full items-center rounded-sm py-2 text-sm hover:bg-slate-200"
               >
                 <Trash2Icon size={16} className="mr-2" />
                 Delete Folder
-              </Button> */}
+              </Button>
             </div>
           )}
           {/* Rename Popup */}
           {showRenamePopup && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <div className="w-80 rounded-lg bg-slate-50 p-6 text-black shadow-lg">
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+              <div className="w-80 -translate-y-3/4 transform rounded-lg bg-slate-50 p-6 text-black shadow-lg">
                 <h2 className="text-lg font-bold">Rename Folder</h2>
                 <input
                   type="text"
@@ -239,6 +250,38 @@ export function FolderRow(props: { folder: typeof folders.$inferSelect }) {
                     className="bg-green-600 text-white hover:bg-opacity-80"
                   >
                     {isRenaming ? "Renaming..." : "Rename"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* Delete Confirmation Popup */}
+          {showDeletePopup && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+              <div className="w-96 -translate-y-3/4 transform rounded-lg bg-slate-50 p-6 text-black shadow-lg">
+                <h2 className="text-lg font-bold text-black">
+                  Confirm Delete
+                </h2>
+                <p className="mt-2 text-gray-600">
+                  Are you sure you want to delete this folder?
+                </p>
+                <div className="mt-4 flex justify-end space-x-2">
+                  {/* Cancel Button */}
+                  <Button
+                    variant="ghost"
+                    onClick={() => setShowDeletePopup(false)}
+                    className="border"
+                  >
+                    Cancel
+                  </Button>
+
+                  {/* Confirm Delete Button */}
+                  <Button
+                    onClick={() => handleDelete(folder.id)}
+                    disabled={isDeleting}
+                    variant="destructive"
+                  >
+                    {isDeleting ? "Deleting..." : "Delete"}
                   </Button>
                 </div>
               </div>

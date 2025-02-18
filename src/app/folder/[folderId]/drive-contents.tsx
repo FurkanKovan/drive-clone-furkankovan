@@ -122,7 +122,7 @@ export default function DriveContents(props: {
             ))}
           </ul>
         </div>
-        <div className="inline-flex w-full justify-center">
+        <div className="w-full justify-center items-center">
           <UploadButton
             className="mt-6 ut-button:hover:brightness-150"
             endpoint="driveUploader"
