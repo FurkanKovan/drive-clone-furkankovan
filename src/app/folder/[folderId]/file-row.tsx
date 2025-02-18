@@ -1,8 +1,16 @@
-import { Folder as FolderIcon, FileIcon, Trash2Icon, Loader2Icon } from "lucide-react";
+import {
+  Folder as FolderIcon,
+  FileIcon,
+  Trash2Icon,
+  Loader2Icon,
+  EllipsisVerticalIcon,
+  FolderPlusIcon,
+  FolderPenIcon,
+} from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "~/components/ui/button";
-import { deleteFile } from "~/server/actions";
+import { deleteFile, renameFolder } from "~/server/actions";
 import type {
   folders_table as folders,
   files_table as files,
@@ -48,6 +56,7 @@ export function FileRow(props: { file: typeof files.$inferSelect }) {
             variant="ghost"
             aria-label="Delete File"
             onClick={() => setDeletePopup(true)}
+            className="hover:bg-transparent"
           >
             <Trash2Icon size={20} />
           </Button>
@@ -95,12 +104,59 @@ export function FileRow(props: { file: typeof files.$inferSelect }) {
 }
 export function FolderRow(props: { folder: typeof folders.$inferSelect }) {
   const { folder } = props;
+  const [showFolderOptions, setFolderOptions] = useState<boolean>(false);
+  const [showRenamePopup, setShowRenamePopup] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
+  const [isRenaming, setIsRenaming] = useState(false);
+  const folderOptionsRef = useRef<HTMLDivElement | null>(null);
+
+  const handleRename = async () => {
+    if (!newFolderName.trim()) return;
+
+    setIsRenaming(true);
+    try {
+      await renameFolder(newFolderName.trim(), folder.id);
+      setShowRenamePopup(false); // Close popup after renaming
+      setNewFolderName("");
+    } catch (error) {
+      console.error("Error renaming folder:", error);
+      setNewFolderName("");
+    } finally {
+      setNewFolderName("");
+      setIsRenaming(false);
+    }
+  };
+
+  const handleDelete = async () => {
+   console.log("Deleting folder...")
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        folderOptionsRef.current &&
+        !folderOptionsRef.current.contains(event.target as Node)
+      ) {
+        setFolderOptions(false); // Close menu if click is outside
+      }
+    };
+
+    if (showFolderOptions) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showFolderOptions]);
+
   return (
     <li
       key={folder.id}
       className="hover:bg-gray-750 border-b border-gray-700 px-6 py-4"
     >
       <div className="grid grid-cols-12 items-center gap-4">
+        {/* Name Field */}
         <div className="col-span-6 flex items-center">
           <Link
             href={`/folder/${folder.id}`}
@@ -110,8 +166,85 @@ export function FolderRow(props: { folder: typeof folders.$inferSelect }) {
             {folder.name}
           </Link>
         </div>
+        {/* Type Field */}
+        <div className="col-span-2 text-gray-400"></div>
+        {/* Size Field */}
         <div className="col-span-3 text-gray-400"></div>
-        <div className="col-span-3 text-gray-400"></div>
+        {/* Options Button */}
+        <div className="col-span-1 text-gray-400" ref={folderOptionsRef}>
+          <Button
+            variant="ghost"
+            aria-label="Folder Options"
+            onClick={() => setFolderOptions((prev) => !prev)}
+            className="hover:bg-transparent"
+          >
+            <EllipsisVerticalIcon size={20} />
+          </Button>
+          {/* Dropdown Options */}
+          {showFolderOptions && (
+            <div className="absolute right-20 w-fit rounded-sm bg-slate-50 text-black shadow-lg">
+              {/* Rename Folder */}
+              <Button
+                onClick={() => {
+                  setFolderOptions(false);
+                  setShowRenamePopup(true);
+                }}
+                className="flex w-full items-center rounded-sm py-2 text-sm hover:bg-slate-200"
+              >
+                <FolderPenIcon size={16} className="mr-2" />
+                Rename Folder
+              </Button>
+              {/* Delete Folder */}
+              {/* <Button
+                onClick={() => {
+                  setFolderOptions(false);
+                  handleDelete();
+                }}
+                className="flex w-full items-center rounded-sm py-2 text-sm hover:bg-slate-200"
+              >
+                <Trash2Icon size={16} className="mr-2" />
+                Delete Folder
+              </Button> */}
+            </div>
+          )}
+          {/* Rename Popup */}
+          {showRenamePopup && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="w-80 rounded-lg bg-slate-50 p-6 text-black shadow-lg">
+                <h2 className="text-lg font-bold">Rename Folder</h2>
+                <input
+                  type="text"
+                  placeholder="Enter new folder name"
+                  value={newFolderName}
+                  onChange={(e) => setNewFolderName(e.target.value)}
+                  className="mt-2 w-full rounded-md border border-gray-300 p-2"
+                />
+                <div className="mt-4 flex justify-end space-x-2">
+                  {/* Cancel Button */}
+                  <Button
+                    variant="destructive"
+                    onClick={() => {
+                      setShowRenamePopup(false);
+                      setNewFolderName("");
+                    }}
+                    className="border"
+                  >
+                    Cancel
+                  </Button>
+                  {/* Rename Button */}
+                  <Button
+                    onClick={handleRename}
+                    disabled={isRenaming}
+                    variant="default"
+                    className="bg-green-600 text-white hover:bg-opacity-80"
+                  >
+                    {isRenaming ? "Renaming..." : "Rename"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </li>
   );

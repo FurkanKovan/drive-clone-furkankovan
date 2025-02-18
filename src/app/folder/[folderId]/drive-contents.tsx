@@ -1,6 +1,10 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import {
+  ChevronRight,
+  EllipsisVerticalIcon,
+  FolderPlusIcon,
+} from "lucide-react";
 import { FileRow, FolderRow } from "./file-row";
 import type {
   files_table as files,
@@ -9,7 +13,10 @@ import type {
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { UploadButton } from "~/components/uploadthing";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { Button } from "~/components/ui/button";
+import { useEffect, useRef, useState } from "react";
+import { createFolder } from "~/server/actions";
 
 export default function DriveContents(props: {
   files: (typeof files.$inferSelect)[];
@@ -18,6 +25,29 @@ export default function DriveContents(props: {
   currentFolderId: number;
 }) {
   const navigate = useRouter();
+  const params = useParams();
+  const [showFolderOptions, setFolderOptions] = useState<boolean>(false);
+  const folderOptionsRef = useRef<HTMLDivElement | null>(null);
+  const folderId = params.folderId ? Number(params.folderId) : -1;
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        folderOptionsRef.current &&
+        !folderOptionsRef.current.contains(event.target as Node)
+      ) {
+        setFolderOptions(false); // Close menu if click is outside
+      }
+    };
+
+    if (showFolderOptions) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showFolderOptions]);
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-900 p-8 text-gray-100">
@@ -57,7 +87,30 @@ export default function DriveContents(props: {
               <div className="col-span-6">Name</div>
               <div className="col-span-2">Type</div>
               <div className="col-span-3">Size</div>
-              <div className="col-span-1"></div>
+              <div className="col-span-1 text-gray-400" ref={folderOptionsRef}>
+                <Button
+                  variant="ghost"
+                  aria-label="Folder Options"
+                  onClick={() => setFolderOptions((prev) => !prev)}
+                  className="hover:bg-transparent"
+                >
+                  <EllipsisVerticalIcon size={20} />
+                </Button>
+                {showFolderOptions && (
+                  <div className="absolute right-20 w-fit rounded-sm bg-slate-50 text-black shadow-lg">
+                    <Button
+                      onClick={() => {
+                        setFolderOptions(false);
+                        createFolder("New Folder", folderId);
+                      }}
+                      className="flex w-fit items-center rounded-sm px-4 py-2 text-sm hover:bg-slate-200"
+                    >
+                      <FolderPlusIcon size={16} className="mr-2" />
+                      Create New Folder
+                    </Button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <ul>
@@ -71,7 +124,7 @@ export default function DriveContents(props: {
         </div>
         <div className="inline-flex w-full justify-center">
           <UploadButton
-            className="mt-4 ut-button:hover:brightness-150"
+            className="mt-6 ut-button:hover:brightness-150"
             endpoint="driveUploader"
             onClientUploadComplete={() => {
               navigate.refresh(); // To get updated data for this route, revalidate page contents and get correct state
@@ -80,7 +133,7 @@ export default function DriveContents(props: {
           />
         </div>
       </div>
-      <p className="mx-auto mt-auto px-4 max-w-screen-md text-xs text-red-200 text-center">
+      <p className="mx-auto mt-auto max-w-screen-md px-4 text-center text-xs text-red-200">
         Disclaimer! This website is only a demo and not intended for any
         personal usage. Please only upload files for testing purposes and make
         sure to delete them afterwards. Do not upload any sensitive files. All
@@ -94,7 +147,7 @@ export default function DriveContents(props: {
         file url. Note that if server storage limit is reached from our side, no
         upload will be made.
       </p>
-      <footer className="items-center text-center mt-2 text-sm text-neutral-500">
+      <footer className="mt-2 items-center text-center text-sm text-neutral-500">
         © {new Date().getFullYear()} FurkanKovan Drive. All rights reserved.
       </footer>
     </div>

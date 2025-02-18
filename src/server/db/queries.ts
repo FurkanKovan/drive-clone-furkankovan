@@ -61,7 +61,7 @@ export const DB_QUERIES = {
             .from(foldersSchema)
             .where(eq(foldersSchema.id, folderId))
             .limit(1);
-            return result[0]?.ownerId ?? null;
+        return result[0]?.ownerId ?? null;
     },
 };
 
@@ -79,6 +79,29 @@ export const DB_MUTATIONS = {
             ...input.file,
             ownerId: input.userId,
         });
+    },
+    createFolder: async function (input: {
+        folder: {
+            name: string;
+            parent: number;
+        };
+        userId: string;
+    }) {
+        return await db.insert(foldersSchema).values({
+            ...input.folder,
+            ownerId: input.userId,
+        });
+    },
+    renameFolder: async function (input: {
+        folder: {
+            id: number;
+            name: string;
+        };
+        userId: string;
+    }) {
+        return await db.update(foldersSchema)
+            .set({ name: input.folder.name })
+            .where(and(eq(foldersSchema.id, input.folder.id), eq(foldersSchema.ownerId, input.userId)));
     },
     onboardUser: async function (userId: string) {
         const rootFolder = await db
