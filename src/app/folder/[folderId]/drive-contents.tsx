@@ -30,6 +30,14 @@ export default function DriveContents(props: {
   const folderOptionsRef = useRef<HTMLDivElement | null>(null);
   const folderId = params.folderId ? Number(params.folderId) : -1;
 
+  const handleCreateFolder = async (folderName: string, folderId: number) => {
+    try {
+      await createFolder(folderName, folderId); // Wait for the delete function
+    } catch (error) {
+      console.error("Error creating folder:", error);
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -99,9 +107,9 @@ export default function DriveContents(props: {
                 {showFolderOptions && (
                   <div className="absolute right-20 w-fit rounded-sm bg-slate-50 text-black shadow-lg">
                     <Button
-                      onClick={() => {
+                      onClick={async () => {
                         setFolderOptions(false);
-                        createFolder("New Folder", folderId);
+                        await handleCreateFolder("New Folder", folderId);
                       }}
                       className="flex w-fit items-center rounded-sm px-4 py-2 text-sm hover:bg-slate-200"
                     >
@@ -122,7 +130,7 @@ export default function DriveContents(props: {
             ))}
           </ul>
         </div>
-        <div className="w-full justify-center items-center">
+        <div className="w-full items-center justify-center">
           <UploadButton
             className="mt-6 ut-button:hover:brightness-150"
             endpoint="driveUploader"
