@@ -31,9 +31,11 @@ Special thanks to [t3.gg](https://www.youtube.com/@t3dotgg) for providing the tu
 - [x] Add auth
 - [x] Add file uploading
 - [x] Add analytics
-- [x] Add delete
+- [x] Add delete files
 - [x] Real homepage and onboarding
-- [ ] Add more functionality
+- [x] Add create, rename, delete folder
+- [ ] Add rename files
+- [ ] Populate type field properly for files
 - [x] Prettify UI a bit
 - [x] Add disclaimer
 
@@ -56,3 +58,4 @@ Special thanks to [t3.gg](https://www.youtube.com/@t3dotgg) for providing the tu
 16. Add an onboarding page, check if user is signed in, if user has no drive create a new one with default folders
 17. Prevent users to access unauthorized folders for them
 18. Add disclaimer to footer
+19. Add new functionality, create, rename and delete folders
